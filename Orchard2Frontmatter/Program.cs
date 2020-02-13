@@ -43,6 +43,20 @@ namespace Orchard2Frontmatter
             foreach (var post in posts)
             {
                 var postFilePath = Path.Combine(outputDirectory, post.Alias.Replace('/', '\\') + ".md");
+                var sb = new StringBuilder();
+                sb.AppendLine("---");
+
+                sb.AppendLine("title: " + post.Title);
+                sb.AppendLine("tags:");
+                foreach (var item in post.Tags)
+                {
+                    sb.AppendLine("- " + item);
+                }
+                sb.AppendLine("date: " + post.PublishedUtc.ToString("yyyy-MM-dd"));
+                
+                sb.AppendLine("---");
+                sb.Append(post.Body);
+
                 Console.WriteLine("Creating file: " + postFilePath);
 
                 var fileInfo = new FileInfo(postFilePath);
@@ -52,7 +66,7 @@ namespace Orchard2Frontmatter
                 using (FileStream fs = File.Create(postFilePath))
                 {
                     // Add some text to file    
-                    Byte[] text = new UTF8Encoding(true).GetBytes(post.Body);
+                    Byte[] text = new UTF8Encoding(true).GetBytes(sb.ToString());
                     fs.Write(text, 0, text.Length);
                 }
 
