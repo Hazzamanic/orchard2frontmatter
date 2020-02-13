@@ -8,5 +8,8 @@
   <ItemGroup>
     <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <None Update="data/export.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>
